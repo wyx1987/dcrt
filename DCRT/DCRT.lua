@@ -72,6 +72,9 @@ local DKPStringFormat = {
 							end
 							xml = xml .. "</members>"
 							xml = xml .. "<point>" .. event["dkp"] .. "</point>"
+							if event["dkp"] < 0 then
+								xml = xml .. "<punish>true</punish>"
+							end
 							xml = xml .. "</event>"
 						end
 						if event["hasAlternate"] then
