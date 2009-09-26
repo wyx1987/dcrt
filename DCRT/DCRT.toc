@@ -1,0 +1,17 @@
+## Interface: 30200
+## Title: DCRT
+## Title-zhCN: DCRT
+## Author: CN5-提爾之手-Mizzle
+## Version: 2.0
+## Notes: Raid tracker for Diamond Crevasse.
+## Notes-zhCN: 钻石裂痕专用DKP统计插件。
+## Notes-zhTW: 鑽石裂痕團隊專用DKP統計插件。
+## eMail: wyx1987@gmail.com
+## X-eMail: wyx1987@gmail.com
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: DCRTDB
+
+DCRT.xml
+
+
