@@ -1,7 +1,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("DCRT", "zhCN")
 
 if L then
-	L["Diamond Crevasse Raid Tool"] = "钻石裂痕Raid工具"
+	L["Diamond Crevasse Raid Tool"] = "夜痕名冊Raid工具"
 	L["Raid list"] = "活动列表"
 	L["New"] = "新建"
 	L["Create new a raid"] = "新建一个Raid活动。"
@@ -164,9 +164,9 @@ if L then
 	L["UNKNOW"] = "未知"
 	L["Select a channel"] = "请先选择一个发送频道。"
 	L["Left click to send dkp by whisper, SHIFT + left click to send dkp to guild, CTRL + left click to send dkp to raid"] = "单击发送密语，SHIFT+单击发送到公会频道，CTRL+单击发送到团队频道。"
-	L["--------DCRT DKP query result---------"]  = "--------钻石裂痕DKP查询结果--------"
+	L["--------DCRT DKP query result---------"]  = "--------夜痕名冊DKP查询结果--------"
 	L["-------------No data--------------"] = "--------------没有数据--------------"
-	L["DCRT DKP Message:"] = "钻石裂痕DKP信息："
+	L["DCRT DKP Message:"] = "夜痕名冊DKP信息："
 	
 	L["Select Raid Zone"] = "选择副本"
 	L["Main parties"] = "主力小队"
@@ -202,7 +202,7 @@ if L then
 	L["Include offline member while auto events occured"] = "产生自动事件时包括离线成员"
 	L["Pormpt to input dkp when a item is looted"] = "拾取物品时弹出DKP输入框"
 	
-	L["DCRT Message:"] = "钻石裂痕Raid工具消息："
+	L["DCRT Message:"] = "夜痕名冊Raid工具消息："
 	L["Score must be number"] = "分数必须为数字"
 	
 	L["Import and export"] = "导入导出"
@@ -221,6 +221,7 @@ if L then
 	L["Naxxramas"] = "纳克萨玛斯"
 	L["Ulduar"] = "奥杜尔"
 	L["Trial of the Crusader"] = "十字军的试炼"
+	L["Onyxia's Lair"] = "奥妮克希亚的巢穴"
 	
 	--------------------------------------------------------------------------------------
 	

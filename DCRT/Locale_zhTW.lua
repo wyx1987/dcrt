@@ -221,8 +221,8 @@ if L then
 	L["Naxxramas"] = "納克薩瑪斯"
 	L["Ulduar"] = "奧杜亞"
 	L["Trial of the Crusader"] = "十字軍試煉"
---	L["The Obsidian Sanctum"] = "黑曜聖所"			--如有需要，才再加入數據
---	L["The Eye of Eternity"] = "永恆之眼"			--如有需要，才再加入數據
+	L["The Obsidian Sanctum"] = "黑曜聖所"			--如有需要，才再加入數據
+	L["The Eye of Eternity"] = "永恆之眼"			--如有需要，才再加入數據
 	
 	--------------------------------------------------------------------------------------
 	

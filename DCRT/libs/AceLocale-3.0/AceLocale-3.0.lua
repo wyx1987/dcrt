@@ -1,12 +1,20 @@
 --- **AceLocale-3.0** manages localization in addons, allowing for multiple locale to be registered with fallback to the base locale for untranslated strings.
 -- @class file
 -- @name AceLocale-3.0
--- @release $Id: AceLocale-3.0.lua 766 2009-04-04 08:26:05Z nevcairiel $
+-- @release $Id: AceLocale-3.0.lua 895 2009-12-06 16:28:55Z nevcairiel $
 local MAJOR,MINOR = "AceLocale-3.0", 2
 
 local AceLocale, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceLocale then return end -- no upgrade needed
+
+-- Lua APIs
+local assert, tostring, error = assert, tostring, error
+local setmetatable, rawset, rawget = setmetatable, rawset, rawget
+
+-- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
+-- List them here for Mikk's FindGlobals script
+-- GLOBALS: GAME_LOCALE, geterrorhandler
 
 local gameLocale = GetLocale()
 if gameLocale == "enGB" then

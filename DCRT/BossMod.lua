@@ -1,7 +1,7 @@
 local bb = LibStub("LibBabble-Boss-3.0"):GetUnstrictLookupTable()
 
 DCRT_BOSS_MOD = {
-	["Serpentshrine Cavern"] = {
+	--[[["Serpentshrine Cavern"] = {
 		["Hydross the Unstable"] = {
 			["name"] = bb["Hydross the Unstable"],
 			["kill"] = {
@@ -251,7 +251,7 @@ DCRT_BOSS_MOD = {
 				}
 			}
 		}
-	},
+	},]]
 	["Ulduar"] = {
 		["Algalon the Observer"] = {
 			["name"] = bb["Algalon the Observer"],
@@ -570,6 +570,16 @@ DCRT_BOSS_MOD = {
 					bb["Thaddius"],
 					bb["Feugen"],
 					bb["Stalagg"]
+				}
+			}
+		}
+	},
+	["Onyxia's Lair"] = {
+		["Onyxia"] = {
+			["name"] = bb["Onyxia"],
+			["kill"] = {
+				["UNIT_DEAD"] = {
+					bb["Onyxia"]
 				}
 			}
 		}

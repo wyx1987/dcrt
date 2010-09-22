@@ -348,7 +348,7 @@ local DKPDataFormat = {
 local defaultConfigs = {
 	["iconPosition"] = 200,
 	["raidConfigs"] = {
-		["Serpentshrine Cavern"] = {
+	--[[	["Serpentshrine Cavern"] = {
 			["name"] = L["Serpentshrine Cavern"],
 			["mainParties"] = {
 				[1] = true,
@@ -557,7 +557,7 @@ local defaultConfigs = {
 			["recordItemLevel"] = 4,
 			["ignoredBoss"] = {
 			}
-		},
+		},]]
 		["Ulduar"] = {
 			["name"] = L["Ulduar"],
 			["mainParties"] = {
@@ -725,7 +725,49 @@ local defaultConfigs = {
 			["recordItemLevel"] = 4,
 			["ignoredBoss"] = {
 			}
-		}
+		},
+		["Onyxia's Lair"] = {
+			["name"] = L["Onyxia's Lair"],
+			["mainParties"] = {
+				[1] = true,
+				[2] = true,
+				[3] = true,
+				[4] = true,
+				[5] = true,
+				[6] = false,
+				[7] = false,
+				[8] = false
+			},
+			["alternateParties"] = {
+				[1] = false,
+				[2] = false,
+				[3] = false,
+				[4] = false,
+				[5] = false,
+				[6] = true,
+				[7] = true,
+				[8] = true
+			},
+			["banedParties"] = {
+				[1] = false,
+				[2] = false,
+				[3] = false,
+				[4] = false,
+				[5] = false,
+				[6] = false,
+				[7] = false,
+				[8] = false
+			},
+			["musterScore"] = 2,
+			["bossScore"] = 3,
+			["alternateScore"] = 1.5,
+			["dismissScore"] = 2,
+			["timeScore"] = 1,
+			["alternateTimeScore"] = 1,
+			["recordItemLevel"] = 4,
+			["ignoredBoss"] = {
+			}
+		},
 	},
 	["raidList"] = {},
 	["items"] = {
@@ -786,6 +828,21 @@ local defaultConfigs = {
 			["ignore"] = true
 		},
 		--[[徽章, 水晶]]
+		[47241] = {
+			["ignore"] = true
+		},
+		[45624] = {
+			["ignore"] = true
+		},
+		[40753] = {
+			["ignore"] = true
+		},
+		[40752] = {
+			["ignore"] = true
+		},
+		[34057] = {
+			["ignore"] = true
+		},
 	},
 	["dkpStringFormat"] = "eqdkp",
 	["dkpDataFormat"] = "midkp",
@@ -810,29 +867,10 @@ local defaultConfigs = {
 	["promptLootDialog"] = true,
 	["dkp"] = {
 		["updateTime"] = 0,
-		["sum"] = 0,
+		["sum"] = -1,
 		["list"] = {}
 	}
 }
-
-if GetLocale() == "zhTW" then
-	local items = defaultConfigs["items"];
-	items[47241] = {
-			["ignore"] = true
-		}
-	items[45624] = {
-			["ignore"] = true
-		}
-	items[40753] = {
-			["ignore"] = true
-		}
-	items[40752] = {
-			["ignore"] = true
-		}
-	items[34057] = {
-			["ignore"] = true
-		}
-end
 
 --[[Show item id]]
 do
