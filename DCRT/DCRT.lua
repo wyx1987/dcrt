@@ -1,6 +1,6 @@
 DCRT = LibStub("AceAddon-3.0") : NewAddon("DCRT","AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0")
 
-DCRT.Version = "2.0 20090914"
+DCRT.Version = "2.0 20100922"
 
 --[[For new version of dwdkp]]
 MerDKP_Table = {}
