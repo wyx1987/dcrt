@@ -4,5 +4,5 @@
 	<Script file="events.lua" />
 	<Script file="utils.lua" />
 	<Script file="dcrt.lua" />
-	<Include file="mods/mods.xml" />
+	<Include file="mods\mods.xml" />
 </Ui>

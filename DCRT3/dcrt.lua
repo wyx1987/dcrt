@@ -5,10 +5,10 @@
 local assert, getmetatable, setmetatable, type, print, time, pairs, ipairs, pcall = assert, getmetatable, setmetatable, type, print, time, pairs, ipairs, pcall
 local table, string = table, string
 
-local dcrt = CreateFrame("Frame", "DCRT")
+local dcrt = CreateFrame("Frame", "DCRTFrame")
 
 -- Get a new copy of dcrt by call DCRT().
-getmetatable(DCRT).__call = function()
+function DCRT()
 	local instance = {}
 	setmetatable(instance, {
 		__index = dcrt
@@ -67,23 +67,22 @@ do
 end
 
 -- Addon
-local Addon = {
-	__index = Addon
-}
+local Addon = {}
 
 function Addon:RegisterEvent(event)
 	assert(type(event) == "string", "Event name must be string.")
-	assert(type(handle) == "function", "Handle must be function.")
 	
 	if self.events[event] then
 		return
 	end
 	
-	if not string.find(event, "DCRT") and not registeredEvents[event] then
-		dcrt:RegisterEvent(event)
-		registeredEvents[event] = 1
-	else
-		registeredEvents[event] = registeredEvents[event] + 1
+	if not string.find(event, "DCRT") then
+		if not registeredEvents[event] then
+			dcrt:RegisterEvent(event)
+			registeredEvents[event] = 1
+		else
+			registeredEvents[event] = registeredEvents[event] + 1
+		end
 	end
 	
 	if not self.events then
@@ -100,20 +99,20 @@ function Addon:UnRegisterEvent(event)
 		return
 	end
 	
-	if not string.find(event, "DCRT") and registeredEvents[event] == 1 then
-		registeredEvents[event] = nil
-		dcrt:UnregisterEvent(event)
-	else
-		registeredEvents[event] = registeredEvents[event] - 1
+	if not string.find(event, "DCRT") then
+		if registeredEvents[event] == 1 then
+			registeredEvents[event] = nil
+			dcrt:UnregisterEvent(event)
+		else
+			registeredEvents[event] = registeredEvents[event] - 1
+		end
 	end
 	
 	self.events[event] = nil
 end
 
 -- Timer
-local Timer = {
-	__index = Timer
-}
+local Timer = {}
 
 function Timer:Enable()
 	self.enable = true
@@ -134,15 +133,11 @@ function Timer:SetHandler(handler)
 end
 
 -- DKP
-local DKP = {
-	__index = DKP
-}
+local DKP = {}
 
 
 -- Member
-local Member = {
-	__index = Member
-}
+local Member = {}
 
 function Member:GetName()
 	return self.name
@@ -157,14 +152,10 @@ function Member:GetScore(system)
 end
 
 -- Event
-local Event = {
-	__index = Event
-}
+local Event = {}
 
 -- Item
-local Item = {
-	__index = Item
-}
+local Item = {}
 
 function Item:GetName()
 	return GetItemInfo(self.link)
@@ -191,15 +182,7 @@ function Item:SetCast(cast)
 end
 
 -- Raid
-local Raid = {
-	__index = Raid,
-	__eq = function(raid1, raid2)
-		if raid1.name and raid2.name then
-			return raid1.name == raid2.name
-		end
-		return false
-	end
-}
+local Raid = {}
 
 function Raid:GetName()
 	return self.name
@@ -218,46 +201,81 @@ function Raid:GetCreationTime()
 end
 
 function Raid:Start()
-	if not startTime then
-		self.startTime = time()
-		self.started = true
+	if utils.IsInRaid() then
+		if not self.startTime then
+			self.startTime = time()
+			self.started = true
+		else
+			dcrt:FireEvent(EVENTS.ERROR, ERRORS.RAID_STARTED)
+		end
+	else
+		dcrt:FireEvent(EVENTS.ERROR, ERRORS.NOT_IN_RAID)
 	end
 end
 
 function Raid:Pause()
-	self.pause = true
+	if self.startTime then
+		self.pause = true
+	else
+		dcrt:FireEvent(EVENTS.ERROR, ERRORS.RAID_NOT_START)
+	end
 end
 
 function Raid:Resume()
-	self.pause = nil
+	if self.startTime then
+		self.pause = nil
+	else
+		dcrt:FireEvent(EVENTS.ERROR, ERRORS.RAID_NOT_START)
+	end
 end
 
 function Raid:Finish()
-	self.finished = true
-	self.finishTime = time()
+	if self.startTime then
+		self.finished = true
+		self.finishTime = time()
+	else
+		dcrt:FireEvent(EVENTS.ERROR, ERRORS.RAID_NOT_START)
+	end
 end
 
 function Raid:NewEvent()
+	
 end
 
 function Raid:RemoveEvent(event)
 end
 
 function Raid:NewItem()
-	local item = {}
-	setmetatable(item, Item)
-	if not GetItemInfo(link) then
-		GameTooltip:SetHyperlink(link) 
+	if self.startTime then
+		local item = {}
+		setmetatable(item, {
+			__index = Item
+		})
+		if not GetItemInfo(link) then
+			GameTooltip:SetHyperlink(link) 
+		end
+		item.link = link
+		return item
+	else
+		dcrt:FireEvent(EVENTS.ERROR, ERRORS.RAID_NOT_START)
 	end
-	item.link = link
-	return item
 end
 
 function Raid:RemoveItem(item)
+	for k, v in ipairs(self.items) do
+		if v == item then
+			table.remove(self.items, k)
+			break
+		end
+	end
 end
 
 function Raid:GetTimer()
 	return self.timer
+end
+
+function Raid:Export()
+	
 end
 
 -- DCRT
@@ -273,7 +291,9 @@ function dcrt:NewTimer(initval, handler)
 	local timer = {
 		initval = initval or 1
 	}
-	setmetatable(timer, Timer)
+	setmetatable(timer, {
+		__index = Timer
+	})
 	table.insert(self.timers, timer)
 	return timer
 end
@@ -292,7 +312,9 @@ function dcrt:NewAddon(name)
 		events = {}
 	}
 	addon.name = name
-	setmetatable(addon, Addon)
+	setmetatable(addon, {
+		__index = Addon
+	})
 	table.insert(addons, addon)
 	return addon
 end
@@ -301,7 +323,7 @@ function dcrt:FireEvent(event, ...)
 	assert(type(event) == "string", "Event name must be string.")
 	for _, addon in ipairs(addons) do
 		if type(addon.OnEvent) == "function" and addon.events[event] then
-			local res, err = pcall(addon.OnEvent, event, ...)
+			local res, err = pcall(addon.OnEvent, addon, event, ...)
 			if not res then
 				self:FireEvent(EVENTS.ERROR, ERRORS.RUNTIME_ERROR, err)
 			end
@@ -318,11 +340,14 @@ function dcrt:OnEvent(event, ...)
 		local realm = GetRealmName()
 		if not DCRT3DB[realm] then
 			DCRT3DB[realm] = {
-				config = config
+				config = config,
+				raids = raids
 			}
 		end
 		
 		db = DCRT3DB[realm]
+		config = db.config
+		raids = db.raids
 	end
 end
 
@@ -338,7 +363,15 @@ function dcrt:NewRaid(name)
 			events = {},
 			members = {}
 		}
-		setmetatable(raid, Raid)
+		setmetatable(raid, {
+			__index = Raid,
+			__eq = function(raid1, raid2)
+				if raid1.name and raid2.name then
+					return raid1.name == raid2.name
+				end
+				return false
+			end
+		})
 		raid.name = name
 		raid.creationTime = time()
 		raid.timer = dcrt:NewTimer()
