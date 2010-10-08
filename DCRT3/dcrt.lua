@@ -24,26 +24,7 @@ local db
 local registeredEvents = {}
 
 local addons = {}
-local timers = {}
 local raids = {}
-
--- Initialize for timers.
-local lastcall = time()
-dcrt:SetScript("OnUpdate", function()
-	local now = time()
-	if now - lastcall > 0 then
-		for _, timer in ipairs(timers) do
-			if timer.enabled and now - timer.lastcall >= timer.initval then
-				local res, err = pcall(timer.handler)
-				if not res then
-					dcrt:FireEvent(EVENTS.ERROR, ERRORS.RUNTIME_ERROR, err)
-				end
-				timer.lastcall = now
-			end
-		end
-		lastcall = now
-	end
-end)
 
 -- Initialize for events.
 dcrt:SetScript("OnEvent", function(self, event, ...)
@@ -109,27 +90,6 @@ function Addon:UnRegisterEvent(event)
 	end
 	
 	self.events[event] = nil
-end
-
--- Timer
-local Timer = {}
-
-function Timer:Enable()
-	self.enable = true
-end
-
-function Timer:Disable()
-	self.enable = nil
-end
-
-function Timer:SetInitval(initval)
-	assert(type(initval) == "number", "Initval must be number.")
-	self.initval = initval
-end
-
-function Timer:SetHandler(handler)
-	assert(type(handler) == "function", "Handler must be function.")
-	self.handler = handler
 end
 
 -- DKP
@@ -270,42 +230,11 @@ function Raid:RemoveItem(item)
 	end
 end
 
-function Raid:GetTimer()
-	return self.timer
-end
-
 function Raid:Export()
 	
 end
 
 -- DCRT
-function dcrt:NewTimer(initval, handler)
-	if initval then
-		assert(type(initval) == "number", "Initval must be number.")
-	end
-	
-	if handler then
-		assert(type(handler) == "function", "Handler must be function.")
-	end
-	
-	local timer = {
-		initval = initval or 1
-	}
-	setmetatable(timer, {
-		__index = Timer
-	})
-	table.insert(self.timers, timer)
-	return timer
-end
-
-function dcrt:RemoveTimer(timer)
-	for k, v in ipairs(self.timers) do
-		if v == timer then
-			table.remove(self.timers, k)
-			break
-		end
-	end
-end
 
 function dcrt:NewAddon(name)
 	local addon = {
@@ -374,7 +303,6 @@ function dcrt:NewRaid(name)
 		})
 		raid.name = name
 		raid.creationTime = time()
-		raid.timer = dcrt:NewTimer()
 		table.insert(raids, raid)
 	else
 		dcrt:FireEvent(EVENTS.ERROR, ERRORS.NOT_IN_RAID)
@@ -383,7 +311,6 @@ function dcrt:NewRaid(name)
 end
 
 function dcrt:RemoveRaid(raid)
-	dcrt:RemoveTimer(raid.timer)
 	for k, v in pairs(raids) do
 		if raid == v then
 			table.remove(raids, k)
