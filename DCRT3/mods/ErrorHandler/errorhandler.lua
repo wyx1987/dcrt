@@ -7,10 +7,17 @@ addon = dcrt:NewAddon("ErrorHandler")
 local events = DCRTEvents()
 local errors = DCRTErrors()
 
+local locale = GetLocale()
+
 addon:RegisterEvent(events.ERROR)
 
-function addon:OnEvent(event, err)
+function addon:OnEvent(event, err, ...)
 	if event == events.ERROR then
-		print(err)
+		local message = ""
+		if err == errors.RUNTIME_ERROR then
+			message = err .. (...)
+		end
+		print(message)
+		addon:ShowMessage("error", message)
 	end
 end

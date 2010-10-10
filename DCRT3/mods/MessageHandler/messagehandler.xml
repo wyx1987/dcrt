@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ http://wowprogramming.com/FrameXML/UI.xsd">
-	<Include file="ErrorHandler\errorhandler.xml" />
-	<Include file="TimerScore\timescore.xml" />
-	<Include file="Console\console.xml" />
-	<Include fule="MessageHandler\messagehandler.xml" />
+	<Script>
+		print(2)
+	</Script>
+	<Script file="messagehandler.lua" />
 </Ui>

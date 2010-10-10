@@ -26,10 +26,23 @@ local registeredEvents = {}
 local addons = {}
 local raids = {}
 
+local commandIndex = 1
+
 -- Initialize for events.
 dcrt:SetScript("OnEvent", function(self, event, ...)
 	self:FireEvent(event, ...)
 	self:OnEvent(event, ...)
+end)
+
+dcrt:SetScript("OnUpdate", function()
+	for _, addon in ipairs(addons) do
+		if type(addon.OnUpdate) == "function" then
+			local res, err = pcall(addon.OnUpdate, addon)
+			if not res then
+				self:FireEvent(EVENTS.ERROR, ERRORS.RUNTIME_ERROR, err)
+			end
+		end
+	end
 end)
 
 -- Register events used by dcrt core.
@@ -90,6 +103,35 @@ function Addon:UnRegisterEvent(event)
 	end
 	
 	self.events[event] = nil
+end
+
+function Addon:RegisterCommand(cmd)
+	assert(type(cmd) == "string", "Command must be string.")
+
+	self.commands[cmd] = true
+	
+	_G["SLASH_" .. string.upper(cmd) .. "1"] = "/" .. cmd
+	SlashCmdList[string.upper(cmd)] = function(...)
+		if type(self.OnCommand) == "function" and self.commands[cmd] then
+			local res, err = pcall(self.OnCommand, self, cmd, ...)
+			if not res then
+				dcrt:FireEvent(EVENTS.ERROR, ERRORS.RUNTIME_ERROR, err)
+			end
+		end
+	end
+end
+
+function Addon:UnRegisterCommand(cmd)
+	assert(type(cmd) == "string", "Command must be string.")
+	
+	self.commands[cmd] = nil
+end
+
+function Addon:ShowMessage(_type, message)
+	assert(_type == "info" or _type == "error", "Type must be \"info\" or \"error\"")
+	assert(type(message) == "string", "Message must be string.")
+	
+	dcrt:FireEvent(EVENTS.SHOW_MESSAGE, _type, message)
 end
 
 -- DKP
@@ -237,8 +279,10 @@ end
 -- DCRT
 
 function dcrt:NewAddon(name)
+	print(name)
 	local addon = {
-		events = {}
+		events = {},
+		commands = {}
 	}
 	addon.name = name
 	setmetatable(addon, {
@@ -246,6 +290,13 @@ function dcrt:NewAddon(name)
 	})
 	table.insert(addons, addon)
 	return addon
+end
+
+function dcrt:ShowMessage(_type, message)
+	assert(_type == "info" or _type == "error", "Type must be \"info\" or \"error\"")
+	assert(type(message) == "string", "Message must be string.")
+	
+	self:FireEvent(EVENTS.SHOW_MESSAGE, _type, message)
 end
 
 function dcrt:FireEvent(event, ...)

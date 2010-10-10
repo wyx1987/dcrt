@@ -11,7 +11,7 @@ local timers = {}
 
 -- Initialize for timers.
 local lastcall = time()
-timerFrame:SetScript("OnUpdate", function()
+function Timer:OnUpdate()
 	local now = time()
 	if now - lastcall > 0 then
 		for _, timer in ipairs(timers) do
@@ -25,7 +25,7 @@ timerFrame:SetScript("OnUpdate", function()
 		end
 		lastcall = now
 	end
-end)
+end
 
 function Timer:Enable()
 	self.enable = true
