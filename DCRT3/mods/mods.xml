@@ -2,5 +2,5 @@
 	<Include file="ErrorHandler\errorhandler.xml" />
 	<Include file="TimerScore\timescore.xml" />
 	<Include file="Console\console.xml" />
-	<Include fule="MessageHandler\messagehandler.xml" />
+	<Include file="MessageHandler\messagehandler.xml" />
 </Ui>

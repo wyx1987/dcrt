@@ -137,7 +137,6 @@ end
 -- DKP
 local DKP = {}
 
-
 -- Member
 local Member = {}
 
@@ -279,7 +278,6 @@ end
 -- DCRT
 
 function dcrt:NewAddon(name)
-	print(name)
 	local addon = {
 		events = {},
 		commands = {}

@@ -5,7 +5,6 @@
 local dcrt = DCRT()
 local addon = dcrt:NewAddon("MessageHandler")
 local events = DCRTEvents()
-print(11)
 
 local prefix = ""
 
@@ -16,12 +15,11 @@ end
 addon:RegisterEvent(events.SHOW_MESSAGE)
 
 function addon:OnEvent(event, _type, msg)
-	print(event, _type, msg)
 	if event == events.SHOW_MESSAGE then
 		local message = "|c00ffff00" .. prefix .. "|r"
-		if type == "error" then
+		if _type == "error" then
 			message = message .. "|c00ff0000" .. msg .. "|r"
-		elseif type == "info" then
+		elseif _type == "info" then
 			message = message .. "|c0000ff00" .. msg .. "|r"
 		end
 		print(message)

@@ -17,7 +17,6 @@ function addon:OnEvent(event, err, ...)
 		if err == errors.RUNTIME_ERROR then
 			message = err .. (...)
 		end
-		print(message)
 		addon:ShowMessage("error", message)
 	end
 end

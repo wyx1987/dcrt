@@ -10,28 +10,25 @@ local locale = DCRT_ConsoleLocale()
 
 console:RegisterCommand("dcrt")
 
-local function Usage()
-	print(locale["USAGE"])
-	console:ShowMessage("info", locale["USAGE"])
-end
-
 local function ParseArgs(args)
 	local argTable = {}
 	string.gsub(string.lower(args), "([^%s]+)", function(arg)
 		table.insert(argTable, arg)
 	end)
+	return argTable
 end
 
 function console:OnCommand(cmd, ...)
 	local argTable = ParseArgs(...)
 	if cmd == "dcrt" then
-		print(argTable[1])
 		if argTable[1] == "raid" then
 			if argTable[2] == "new" then
 				
+			else
+				print(locale["RAID_USAGE"])
 			end
 		else
-			Usage()
+			print(locale["USAGE"])
 		end
 	end
 end
